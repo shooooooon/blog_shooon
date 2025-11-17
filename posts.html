@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="技術ブログの記事一覧">
+    <title>記事一覧 - Shooon Blog</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- ヘッダー -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <h1 class="logo"><a href="index.html">Shooon Blog</a></h1>
+                <nav class="nav">
+                    <a href="index.html" class="nav-link">ホーム</a>
+                    <a href="posts.html" class="nav-link active">記事一覧</a>
+                    <a href="about.html" class="nav-link">自己紹介</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- メインコンテンツ -->
+    <main class="main">
+        <div class="container">
+            <section class="section">
+                <h2 class="section-title">すべての記事</h2>
+
+                <!-- タグフィルター -->
+                <div id="tag-filter" class="tag-filter">
+                    <button class="tag-btn active" data-tag="all">すべて</button>
+                    <!-- JavaScriptでタグボタンを追加 -->
+                </div>
+
+                <!-- 記事一覧 -->
+                <div id="all-posts" class="posts-grid">
+                    <div class="loading">記事を読み込み中...</div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- フッター -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Shooon Blog. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/posts.js"></script>
+</body>
+</html>

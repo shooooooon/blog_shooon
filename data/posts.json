@@ -1,0 +1,104 @@
+{
+  "posts": [
+    {
+      "id": "1",
+      "slug": "welcome-to-my-blog",
+      "title": "ブログを始めました",
+      "excerpt": "はじめまして。このブログでは、日々の学びや技術的な発見、思考の記録を綴っていきます。",
+      "content": "# ブログを始めました\n\nはじめまして。このブログでは、日々の学びや技術的な発見、思考の記録を綴っていきます。\n\n## なぜブログを始めたのか\n\n情報をアウトプットすることで、自分の理解を深めたいと思ったからです。また、同じような課題に直面している方の助けになれば幸いです。\n\n## どんな内容を書くのか\n\n- プログラミングに関する技術記事\n- 読んだ本の感想\n- 日々の気づきや学び\n- 趣味や興味のあること\n\nこれから定期的に更新していく予定です。どうぞよろしくお願いします。",
+      "date": "2025-01-15",
+      "readTime": "3分",
+      "tags": ["お知らせ", "雑記"]
+    },
+    {
+      "id": "2",
+      "slug": "react-hooks-best-practices",
+      "title": "React Hooksのベストプラクティス",
+      "excerpt": "React Hooksを使う上で押さえておきたいポイントをまとめました。useEffectの依存配列の扱いや、カスタムフックの作り方など。",
+      "content": "# React Hooksのベストプラクティス\n\nReact Hooksは関数コンポーネントで状態管理や副作用を扱うための強力な機能です。\n\n## useStateの基本\n\n```tsx\nconst [count, setCount] = useState(0);\n```\n\n状態の更新は非同期で行われるため、前の状態に基づいて更新する場合は関数形式を使います。\n\n```tsx\nsetCount(prev => prev + 1);\n```\n\n## useEffectの依存配列\n\nuseEffectの第二引数には、エフェクトが依存する値を配列で指定します。依存配列を正しく設定しないと、無限ループやバグの原因になります。\n\n## カスタムフックの作成\n\nロジックを再利用可能にするために、カスタムフックを作成することができます。\n\n```tsx\nfunction useLocalStorage(key: string, initialValue: string) {\n  const [value, setValue] = useState(() => {\n    return localStorage.getItem(key) || initialValue;\n  });\n\n  useEffect(() => {\n    localStorage.setItem(key, value);\n  }, [key, value]);\n\n  return [value, setValue] as const;\n}\n```\n\nこれらのベストプラクティスを押さえることで、より保守性の高いReactアプリケーションを作ることができます。",
+      "date": "2025-01-20",
+      "readTime": "5分",
+      "tags": ["React", "JavaScript", "フロントエンド"]
+    },
+    {
+      "id": "3",
+      "slug": "tailwind-css-tips",
+      "title": "Tailwind CSSで効率的にスタイリングする方法",
+      "excerpt": "Tailwind CSSの便利な機能と、実務で使えるテクニックを紹介します。カスタムクラスの作り方やレスポンシブデザインのコツなど。",
+      "content": "# Tailwind CSSで効率的にスタイリングする方法\n\nTailwind CSSはユーティリティファーストのCSSフレームワークで、HTMLから離れることなく素早くスタイリングできます。\n\n## ユーティリティクラスの組み合わせ\n\n```html\n<div class=\"flex items-center justify-between p-4 bg-white rounded-lg shadow\">\n  <!-- コンテンツ -->\n</div>\n```\n\n## レスポンシブデザイン\n\nTailwindではブレークポイントをプレフィックスとして使用します。\n\n```html\n<div class=\"w-full md:w-1/2 lg:w-1/3\">\n  <!-- モバイルでは全幅、タブレットで半分、デスクトップで1/3 -->\n</div>\n```\n\n## カスタムクラスの作成\n\n繰り返し使うスタイルは、@layerディレクティブでカスタムクラスとして定義できます。\n\n```css\n@layer components {\n  .btn-primary {\n    @apply px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600;\n  }\n}\n```\n\nTailwindを使うことで、CSSファイルを行き来することなく、コンポーネント単位で完結したスタイリングが可能になります。",
+      "date": "2025-01-25",
+      "readTime": "4分",
+      "tags": ["CSS", "Tailwind", "フロントエンド"]
+    },
+    {
+      "id": "4",
+      "slug": "typescript-generics-guide",
+      "title": "TypeScriptのジェネリクスを理解する",
+      "excerpt": "TypeScriptのジェネリクスは最初は難しく感じますが、理解すると型安全性が大幅に向上します。基本から実践的な使い方まで解説します。",
+      "content": "# TypeScriptのジェネリクスを理解する\n\nジェネリクスは、型を引数として受け取ることで、再利用可能で型安全なコードを書くための機能です。\n\n## 基本的な使い方\n\n```typescript\nfunction identity<T>(arg: T): T {\n  return arg;\n}\n\nconst result = identity<string>(\"hello\"); // string型\nconst num = identity<number>(42); // number型\n```\n\n## 配列とジェネリクス\n\n```typescript\nfunction getFirstElement<T>(arr: T[]): T | undefined {\n  return arr[0];\n}\n\nconst first = getFirstElement([1, 2, 3]); // number | undefined\n```\n\n## インターフェースとジェネリクス\n\n```typescript\ninterface ApiResponse<T> {\n  data: T;\n  status: number;\n  message: string;\n}\n\ntype UserResponse = ApiResponse<{ id: number; name: string }>;\n```\n\n## 制約付きジェネリクス\n\n```typescript\ninterface HasId {\n  id: number;\n}\n\nfunction findById<T extends HasId>(items: T[], id: number): T | undefined {\n  return items.find(item => item.id === id);\n}\n```\n\nジェネリクスを使いこなすことで、より柔軟で型安全なコードを書くことができます。",
+      "date": "2025-02-01",
+      "readTime": "6分",
+      "tags": ["TypeScript", "プログラミング"]
+    },
+    {
+      "id": "5",
+      "slug": "web-performance-optimization",
+      "title": "Webパフォーマンス最適化の基本",
+      "excerpt": "ユーザー体験を向上させるために、Webサイトのパフォーマンスを最適化する方法を紹介します。",
+      "content": "# Webパフォーマンス最適化の基本\n\nWebサイトの読み込み速度は、ユーザー体験に直結する重要な要素です。\n\n## 画像の最適化\n\n- WebPやAVIF形式を使用する\n- 適切なサイズにリサイズする\n- 遅延読み込み（lazy loading）を実装する\n\n```html\n<img src=\"image.webp\" loading=\"lazy\" alt=\"説明\" />\n```\n\n## コードの最適化\n\n- 不要なJavaScriptを削除する\n- コード分割（code splitting）を行う\n- Tree shakingで未使用コードを除去する\n\n## キャッシュの活用\n\n適切なキャッシュヘッダーを設定することで、リピート訪問時の読み込みを高速化できます。\n\n## Core Web Vitalsの改善\n\n- LCP (Largest Contentful Paint): 2.5秒以内\n- FID (First Input Delay): 100ミリ秒以内\n- CLS (Cumulative Layout Shift): 0.1以下\n\nこれらの指標を意識することで、ユーザーにとって快適なWebサイトを作ることができます。",
+      "date": "2025-02-05",
+      "readTime": "5分",
+      "tags": ["パフォーマンス", "Web開発"]
+    },
+    {
+      "id": "6",
+      "slug": "git-workflow-best-practices",
+      "title": "チーム開発で使えるGitワークフロー",
+      "excerpt": "複数人での開発をスムーズに進めるためのGitの使い方とブランチ戦略について解説します。",
+      "content": "# チーム開発で使えるGitワークフロー\n\nチームでの開発では、適切なGitワークフローを採用することが重要です。\n\n## Git Flowとは\n\nGit Flowは、以下のブランチを使い分ける戦略です。\n\n- **main**: 本番環境にデプロイされるコード\n- **develop**: 開発の基準となるブランチ\n- **feature**: 新機能開発用のブランチ\n- **release**: リリース準備用のブランチ\n- **hotfix**: 緊急修正用のブランチ\n\n## コミットメッセージの書き方\n\nわかりやすいコミットメッセージを書くことで、後から変更履歴を追いやすくなります。\n\n```\nfeat: ユーザー登録機能を追加\nfix: ログインエラーを修正\ndocs: READMEを更新\nrefactor: コードを整理\n```\n\n## プルリクエストのベストプラクティス\n\n- 小さな単位で分割する\n- 説明を丁寧に書く\n- レビューしやすいコードを心がける\n\n適切なワークフローを採用することで、チーム全体の生産性が向上します。",
+      "date": "2025-02-10",
+      "readTime": "4分",
+      "tags": ["Git", "チーム開発", "ツール"]
+    },
+    {
+      "id": "7",
+      "slug": "clean-code-principles",
+      "title": "読みやすいコードを書くための原則",
+      "excerpt": "保守性の高いコードを書くために意識すべきポイントをまとめました。命名規則や関数の分割など。",
+      "content": "# 読みやすいコードを書くための原則\n\n良いコードとは、動くだけでなく、読みやすく保守しやすいコードです。\n\n## 意味のある名前をつける\n\n変数名や関数名は、その役割を明確に表すものにします。\n\n```typescript\n// ❌ 悪い例\nconst d = new Date();\nconst x = getUserData();\n\n// ✅ 良い例\nconst currentDate = new Date();\nconst userData = getUserData();\n```\n\n## 関数は1つのことだけをする\n\n関数は単一の責任を持つべきです。複数のことをしている場合は分割を検討します。\n\n```typescript\n// ❌ 悪い例\nfunction processUserAndSendEmail(user: User) {\n  // ユーザー情報を処理\n  // メールを送信\n}\n\n// ✅ 良い例\nfunction processUser(user: User) { /* ... */ }\nfunction sendEmail(user: User) { /* ... */ }\n```\n\n## コメントよりもコードで説明する\n\nコメントに頼るのではなく、コード自体が自己説明的であることを目指します。\n\n## DRY原則（Don't Repeat Yourself）\n\n同じコードを繰り返さず、共通化できる部分は関数やクラスに抽出します。\n\nこれらの原則を意識することで、チームメンバーが理解しやすいコードを書くことができます。",
+      "date": "2025-02-15",
+      "readTime": "5分",
+      "tags": ["プログラミング", "ベストプラクティス"]
+    },
+    {
+      "id": "8",
+      "slug": "api-design-rest-graphql",
+      "title": "RESTとGraphQL、どちらを選ぶべきか",
+      "excerpt": "APIの設計において、RESTとGraphQLのそれぞれの特徴と使い分けについて考察します。",
+      "content": "# RESTとGraphQL、どちらを選ぶべきか\n\nAPIの設計において、RESTとGraphQLはそれぞれ異なる特徴を持っています。\n\n## RESTの特徴\n\n- シンプルで理解しやすい\n- HTTPメソッド（GET, POST, PUT, DELETE）を使用\n- エンドポイントごとにリソースが定義される\n- キャッシュが容易\n\n```\nGET /api/users/123\nPOST /api/users\nPUT /api/users/123\nDELETE /api/users/123\n```\n\n## GraphQLの特徴\n\n- クライアントが必要なデータを指定できる\n- 単一のエンドポイント\n- Over-fetchingやUnder-fetchingを防げる\n- 型システムによる安全性\n\n```graphql\nquery {\n  user(id: \"123\") {\n    name\n    email\n    posts {\n      title\n    }\n  }\n}\n```\n\n## どちらを選ぶべきか\n\n- **RESTが向いている場合**: シンプルなCRUD操作、キャッシュを重視する場合\n- **GraphQLが向いている場合**: 複雑なデータ取得、モバイルアプリなど通信量を抑えたい場合\n\nプロジェクトの要件に応じて、適切な技術を選択することが重要です。",
+      "date": "2025-02-20",
+      "readTime": "6分",
+      "tags": ["API", "REST", "GraphQL", "バックエンド"]
+    },
+    {
+      "id": "9",
+      "slug": "docker-basics-for-developers",
+      "title": "開発者のためのDocker入門",
+      "excerpt": "Dockerの基本概念と、開発環境でDockerを活用する方法を紹介します。",
+      "content": "# 開発者のためのDocker入門\n\nDockerは、アプリケーションをコンテナとして実行するためのプラットフォームです。\n\n## Dockerの基本概念\n\n- **イメージ**: アプリケーションの実行に必要なファイルシステムのスナップショット\n- **コンテナ**: イメージから作成された実行環境\n- **Dockerfile**: イメージを作成するための設定ファイル\n\n## Dockerfileの例\n\n```dockerfile\nFROM node:20-alpine\nWORKDIR /app\nCOPY package*.json ./\nRUN npm install\nCOPY . .\nEXPOSE 3000\nCMD [\"npm\", \"start\"]\n```\n\n## docker-composeで複数のサービスを管理\n\n```yaml\nversion: '3.8'\nservices:\n  web:\n    build: .\n    ports:\n      - \"3000:3000\"\n  db:\n    image: postgres:15\n    environment:\n      POSTGRES_PASSWORD: password\n```\n\n## Dockerのメリット\n\n- 環境の一貫性が保たれる\n- 依存関係の管理が容易\n- 本番環境と同じ環境で開発できる\n\nDockerを使うことで、「自分の環境では動くのに」という問題を解決できます。",
+      "date": "2025-02-25",
+      "readTime": "5分",
+      "tags": ["Docker", "DevOps", "インフラ"]
+    },
+    {
+      "id": "10",
+      "slug": "testing-strategies-frontend",
+      "title": "フロントエンドのテスト戦略",
+      "excerpt": "単体テスト、統合テスト、E2Eテストをどのように組み合わせるか、実践的なアプローチを紹介します。",
+      "content": "# フロントエンドのテスト戦略\n\n適切なテスト戦略を立てることで、バグを早期に発見し、リファクタリングを安全に行えます。\n\n## テストピラミッド\n\nテストは以下の3層で構成されます。\n\n1. **単体テスト（Unit Test）**: 最も多く書く\n2. **統合テスト（Integration Test）**: 中程度の量\n3. **E2Eテスト（End-to-End Test）**: 最小限\n\n## 単体テストの例（Vitest）\n\n```typescript\nimport { describe, it, expect } from 'vitest';\nimport { formatDate } from './utils';\n\ndescribe('formatDate', () => {\n  it('should format date correctly', () => {\n    const date = new Date('2025-01-15');\n    expect(formatDate(date)).toBe('2025年1月15日');\n  });\n});\n```\n\n## コンポーネントのテスト（React Testing Library）\n\n```typescript\nimport { render, screen } from '@testing-library/react';\nimport { Button } from './Button';\n\nit('renders button with text', () => {\n  render(<Button>Click me</Button>);\n  expect(screen.getByText('Click me')).toBeInTheDocument();\n});\n```\n\n## E2Eテスト（Playwright）\n\n```typescript\nimport { test, expect } from '@playwright/test';\n\ntest('user can login', async ({ page }) => {\n  await page.goto('/login');\n  await page.fill('input[name=\"email\"]', 'user@example.com');\n  await page.fill('input[name=\"password\"]', 'password');\n  await page.click('button[type=\"submit\"]');\n  await expect(page).toHaveURL('/dashboard');\n});\n```\n\n## テストを書く際のポイント\n\n- ユーザーの視点でテストを書く\n- 実装の詳細ではなく、振る舞いをテストする\n- テストが失敗した時に原因がわかりやすいようにする\n\n適切なテストを書くことで、自信を持ってコードを変更できるようになります。",
+      "date": "2025-03-01",
+      "readTime": "7分",
+      "tags": ["テスト", "フロントエンド", "品質保証"]
+    }
+  ]
+}
