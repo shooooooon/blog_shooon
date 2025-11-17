@@ -1,35 +1,42 @@
 # Shooon Blog
 
-モダンで高速、ミニマルなデザインの個人ブログサイトです。技術、学び、日々の気づきを綴ります。
+初心者でも簡単に運用・管理できる、モダンでシンプルな個人ブログサイトです。
 
-## 🚀 特徴
+## ✨ 特徴
 
+- **初心者に優しい**: Markdownファイルで記事を管理（プログラミング知識不要）
+- **シンプルな構造**: わかりやすいフォルダ構成
 - **モダンな技術スタック**: Vite + React 19 + TypeScript
 - **ミニマルデザイン**: Tailwind CSS 4による洗練されたUI
-- **高速**: 静的サイト生成による高速な読み込み
+- **高速**: 効率的な読み込みとレンダリング
 - **レスポンシブ**: モバイル・タブレット・デスクトップに完全対応
-- **SEO最適化**: メタタグ、OGP設定済み
-- **簡単な記事管理**: Markdownベースの記事管理
+
+## 📖 初心者向けガイド
+
+**プログラミング初心者の方は、まず [BEGINNER_GUIDE.md](./BEGINNER_GUIDE.md) をお読みください！**
+
+記事の追加方法、画像の挿入方法、ブログの起動方法など、わかりやすく解説しています。
 
 ## 📁 プロジェクト構成
 
 ```
 shooon_blog/
+├── content/
+│   └── posts/              # 📝 記事（Markdownファイル）
+│       ├── welcome-to-my-blog.md
+│       ├── react-hooks-best-practices.md
+│       └── ...
 ├── client/
 │   ├── src/
 │   │   ├── pages/          # ページコンポーネント
-│   │   │   ├── Home.tsx    # トップページ
-│   │   │   ├── Posts.tsx   # 記事一覧
-│   │   │   ├── PostDetail.tsx # 記事詳細
-│   │   │   └── About.tsx   # 自己紹介
 │   │   ├── components/     # 再利用可能なコンポーネント
-│   │   │   ├── Header.tsx  # ヘッダーナビゲーション
-│   │   │   └── Footer.tsx  # フッター
-│   │   ├── data/
-│   │   │   └── posts.ts    # 記事データ
-│   │   └── index.css       # グローバルスタイル
-│   └── index.html
-├── BLOG_MANAGEMENT.md      # 記事管理ガイド
+│   │   └── lib/            # ユーティリティ関数
+│   └── public/
+│       └── images/         # 🖼️ 画像ファイル
+├── server/
+│   ├── index.ts            # サーバーのメインファイル
+│   └── posts.ts            # 記事読み込み機能
+├── BEGINNER_GUIDE.md       # 🌟 初心者向けガイド
 └── README.md
 ```
 
@@ -39,8 +46,8 @@ shooon_blog/
 - **言語**: [TypeScript](https://www.typescriptlang.org/)
 - **スタイリング**: [Tailwind CSS 4](https://tailwindcss.com/)
 - **ルーティング**: [Wouter](https://github.com/molefrog/wouter)
-- **UIコンポーネント**: [shadcn/ui](https://ui.shadcn.com/)
 - **Markdownレンダリング**: [Streamdown](https://github.com/remorses/streamdown)
+- **記事管理**: Markdown + gray-matter
 
 ## 🚀 開発環境のセットアップ
 
@@ -72,29 +79,36 @@ pnpm dev
 pnpm build
 
 # ビルドしたファイルをプレビュー
-pnpm preview
+pnpm start
 ```
 
-## ✍️ 記事の管理
+## ✍️ 記事の追加方法（クイックスタート）
 
-記事の追加・編集方法については、[BLOG_MANAGEMENT.md](./BLOG_MANAGEMENT.md) を参照してください。
+1. `content/posts/` フォルダに新しい `.md` ファイルを作成
+2. ファイルの最初にメタデータを記述
+3. その後に記事本文を書く
 
-### クイックスタート
+**例:**
 
-記事は `client/src/data/posts.ts` で管理されています。
+```markdown
+---
+title: "新しい記事のタイトル"
+date: "2025-03-15"
+excerpt: "記事の簡単な説明"
+tags: ["タグ1", "タグ2"]
+readTime: "5分"
+---
 
-```typescript
-{
-  id: "11",
-  slug: "my-new-post",
-  title: "新しい記事のタイトル",
-  excerpt: "記事の要約",
-  content: `# 記事の内容をMarkdownで書く`,
-  date: "2025-03-15",
-  readTime: "5分",
-  tags: ["タグ1", "タグ2"]
-}
+# 記事のタイトル
+
+ここに記事の内容を書きます。
+
+## 見出し
+
+段落の文章...
 ```
+
+詳細は [BEGINNER_GUIDE.md](./BEGINNER_GUIDE.md) を参照してください。
 
 ## 📝 ページ構成
 
@@ -112,15 +126,6 @@ pnpm preview
 - **レイアウト**: 余白を活かしたミニマルデザイン
 - **レスポンシブ**: モバイルファースト設計
 
-## 🔄 GitHub連携
-
-このプロジェクトは、ManusとGitHubの両方から管理できます。
-
-- **Manus経由**: ブラウザから直接編集、チェックポイント作成時に自動プッシュ
-- **GitHub経由**: ローカル環境やGitHub Web UIで編集、プッシュ時に自動同期
-
-詳細は [BLOG_MANAGEMENT.md](./BLOG_MANAGEMENT.md) を参照してください。
-
 ## 📦 デプロイ
 
 このプロジェクトは、以下のプラットフォームに簡単にデプロイできます：
@@ -137,6 +142,8 @@ pnpm preview
 3. GitHubリポジトリを選択
 4. 自動的にビルド設定が検出されます
 5. 「Deploy」をクリック
+
+詳細は [BEGINNER_GUIDE.md](./BEGINNER_GUIDE.md) の「デプロイ方法」セクションを参照してください。
 
 ## 📄 ライセンス
 

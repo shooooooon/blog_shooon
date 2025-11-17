@@ -4,10 +4,26 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { getPostsSortedByDate } from "@/data/posts";
+import { getPostsSortedByDate, type Post } from "@/lib/api";
+import { useState, useEffect } from "react";
 
 export default function Home() {
-  const recentPosts = getPostsSortedByDate().slice(0, 3);
+  const [recentPosts, setRecentPosts] = useState<Post[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function loadPosts() {
+      try {
+        const posts = await getPostsSortedByDate();
+        setRecentPosts(posts.slice(0, 3));
+      } catch (error) {
+        console.error('Failed to load posts:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadPosts();
+  }, []);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -54,9 +70,14 @@ export default function Home() {
                 </Button>
               </Link>
             </div>
-            
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {recentPosts.map((post) => (
+
+            {loading ? (
+              <div className="text-center py-12">
+                <p className="text-muted-foreground">読み込み中...</p>
+              </div>
+            ) : (
+              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                {recentPosts.map((post) => (
                 <Link key={post.id} href={`/posts/${post.slug}`}>
                   <Card className="h-full transition-all hover:shadow-lg hover:-translate-y-1">
                     <CardHeader>
@@ -91,7 +112,8 @@ export default function Home() {
                   </Card>
                 </Link>
               ))}
-            </div>
+              </div>
+            )}
           </div>
         </section>
       </main>

@@ -3,12 +3,46 @@ import { ArrowLeft, Calendar, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { getPostBySlug } from "@/data/posts";
+import { getPostBySlug, type Post } from "@/lib/api";
 import { Streamdown } from "streamdown";
+import { useState, useEffect } from "react";
 
 export default function PostDetail() {
   const [, params] = useRoute("/posts/:slug");
-  const post = params?.slug ? getPostBySlug(params.slug) : undefined;
+  const [post, setPost] = useState<Post | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function loadPost() {
+      if (!params?.slug) {
+        setLoading(false);
+        return;
+      }
+      try {
+        const data = await getPostBySlug(params.slug);
+        setPost(data);
+      } catch (error) {
+        console.error('Failed to load post:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadPost();
+  }, [params?.slug]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex flex-col">
+        <Header />
+        <main className="flex-1 container py-12">
+          <div className="mx-auto max-w-3xl text-center">
+            <p className="text-muted-foreground">読み込み中...</p>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
 
   if (!post) {
     return (

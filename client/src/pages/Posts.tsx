@@ -3,14 +3,33 @@ import { Calendar, Clock } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { getPostsSortedByDate, getAllTags } from "@/data/posts";
-import { useState } from "react";
+import { getPostsSortedByDate, getAllTags, type Post } from "@/lib/api";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 
 export default function Posts() {
-  const allPosts = getPostsSortedByDate();
-  const allTags = getAllTags();
+  const [allPosts, setAllPosts] = useState<Post[]>([]);
+  const [allTags, setAllTags] = useState<string[]>([]);
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function loadData() {
+      try {
+        const [posts, tags] = await Promise.all([
+          getPostsSortedByDate(),
+          getAllTags(),
+        ]);
+        setAllPosts(posts);
+        setAllTags(tags);
+      } catch (error) {
+        console.error('Failed to load data:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadData();
+  }, []);
 
   const filteredPosts = selectedTag
     ? allPosts.filter(post => post.tags.includes(selectedTag))
@@ -55,8 +74,13 @@ export default function Posts() {
             </div>
 
             {/* Posts List */}
-            <div className="space-y-6">
-              {filteredPosts.map((post) => (
+            {loading ? (
+              <div className="text-center py-12">
+                <p className="text-muted-foreground">読み込み中...</p>
+              </div>
+            ) : (
+              <div className="space-y-6">
+                {filteredPosts.map((post) => (
                 <Link key={post.id} href={`/posts/${post.slug}`}>
                   <Card className="transition-all hover:shadow-lg hover:-translate-y-0.5">
                     <CardHeader>
@@ -96,9 +120,10 @@ export default function Posts() {
                   </Card>
                 </Link>
               ))}
-            </div>
+              </div>
+            )}
 
-            {filteredPosts.length === 0 && (
+            {!loading && filteredPosts.length === 0 && (
               <div className="text-center py-12">
                 <p className="text-muted-foreground">該当する記事が見つかりませんでした。</p>
               </div>
